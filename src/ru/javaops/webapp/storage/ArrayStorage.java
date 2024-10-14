@@ -8,7 +8,8 @@ import ru.javaops.webapp.model.Resume;
  * Array based storage for Resumes
  */
 public class ArrayStorage {
-    private Resume[] storage = new Resume[10000];
+    private static final int STORAGE_LIMIT = 10_000;
+    private final Resume[] storage = new Resume[STORAGE_LIMIT];
     private int size;
 
     public void clear() {
@@ -17,18 +18,14 @@ public class ArrayStorage {
     }
 
     public void save(Resume r) {
-        if (findIndex(r.getUuid()) != -1) {
-            printError(r.getUuid());
-            return;
-        }
-
         if (size >= 10000) {
             System.out.println("Ошибка! Память полностью заполнена! Удалите ненужные резюме.");
-            return;
+        } else if (findIndex(r.getUuid()) != -1) {
+            System.out.println("Ошибка! Резюме с uuid: " + r.getUuid() + " уже существует!");
+        } else {
+            storage[size] = r;
+            size++;
         }
-
-        storage[size] = r;
-        size++;
     }
 
     public void update(Resume r) {
@@ -54,7 +51,7 @@ public class ArrayStorage {
         if (index == -1) {
             printError(uuid);
         } else {
-            System.arraycopy(storage, index + 1, storage, index, size - index - 1);
+            storage[index] = storage[size - 1];
             storage[size - 1] = null;
             size--;
         }
