@@ -5,10 +5,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ru.javaops.webapp.exception.ExistStorageException;
 import ru.javaops.webapp.exception.NotExistStorageException;
-import ru.javaops.webapp.exception.StorageException;
 import ru.javaops.webapp.model.Resume;
 
-abstract class AbstractArrayStorageTest {
+abstract class AbstractListStorageTest {
     private final Storage storage;
     private static final String UUID1 = "uuid1";
     private static final String UUID2 = "uuid2";
@@ -19,7 +18,7 @@ abstract class AbstractArrayStorageTest {
     private static final Resume R3 = new Resume(UUID3);
     private static final Resume R4 = new Resume(UUID4);
 
-    public AbstractArrayStorageTest(Storage storage) {
+    public AbstractListStorageTest(Storage storage) {
         this.storage = storage;
     }
 
@@ -51,17 +50,6 @@ abstract class AbstractArrayStorageTest {
         ExistStorageException exception = Assertions.assertThrows(ExistStorageException.class,
                 () -> storage.save(newResume));
         Assertions.assertEquals("Resume uuid3 already exist", exception.getMessage());
-    }
-
-    @Test
-    void saveArrayOverflow() {
-        storage.clear();
-        for (int i = 0; i < AbstractArrayStorage.STORAGE_LIMIT; i++) {
-            storage.save(new Resume(String.valueOf(i)));
-        }
-        StorageException exception = Assertions.assertThrows(StorageException.class,
-                () -> storage.save(new Resume("10001")));
-        Assertions.assertEquals("Storage overflow", exception.getMessage());
     }
 
     @Test

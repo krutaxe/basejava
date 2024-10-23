@@ -2,11 +2,10 @@ package ru.javaops.webapp.storage;
 
 import java.util.Arrays;
 import ru.javaops.webapp.exception.ExistStorageException;
-import ru.javaops.webapp.exception.NotExistStorageException;
 import ru.javaops.webapp.exception.StorageException;
 import ru.javaops.webapp.model.Resume;
 
-public abstract class AbstractArrayStorage implements Storage {
+public abstract class AbstractArrayStorage extends AbstractStorage {
     protected static final int STORAGE_LIMIT = 10_000;
     protected final Resume[] storage = new Resume[STORAGE_LIMIT];
     protected int size;
@@ -31,37 +30,6 @@ public abstract class AbstractArrayStorage implements Storage {
     }
 
     @Override
-    public void update(Resume r) {
-        int index = findIndex(r.getUuid());
-        if (index < 0) {
-            throw new NotExistStorageException(r.getUuid());
-        } else {
-            storage[index] = r;
-        }
-    }
-
-    @Override
-    public Resume get(String uuid) {
-        int index = findIndex(uuid);
-        if (index < 0) {
-            throw new NotExistStorageException(uuid);
-        }
-        return storage[index];
-    }
-
-    @Override
-    public void delete(String uuid) {
-        int index = findIndex(uuid);
-        if (index < 0) {
-            throw new NotExistStorageException(uuid);
-        } else {
-            deleteResume(index);
-            storage[size - 1] = null;
-            size--;
-        }
-    }
-
-    @Override
     public Resume[] getAll() {
         return Arrays.copyOf(storage, size);
     }
@@ -71,9 +39,20 @@ public abstract class AbstractArrayStorage implements Storage {
         return size;
     }
 
-    protected abstract int findIndex(String uuid);
+    @Override
+    protected void updateResume(int index, Resume resume) {
+        storage[index] = resume;
+    }
 
     protected abstract void insertResume(Resume r, int index);
 
-    protected abstract void deleteResume(int index);
+    @Override
+    protected Resume getResume(int index) {
+        return storage[index];
+    }
+
+    protected void updateArrayStorage(int index) {
+        storage[size - 1] = null;
+        size--;
+    }
 }
