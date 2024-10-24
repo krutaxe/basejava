@@ -20,11 +20,11 @@ public class SortedArrayStorage extends AbstractArrayStorage {
     }
 
     @Override
-    protected void deleteResume(int index) {
-        if (index < 0) {
-            index = Math.abs(index) - 1;
+    protected void deleteResume(Object index) {
+        if ((int) index < 0) {
+            index = Math.abs((int) index) - 1;
         }
-        System.arraycopy(storage, index + 1, storage, index, size - index - 1);
+        System.arraycopy(storage, (int) index + 1, storage, (int) index, size - (int) index - 1);
         updateArrayStorage(index);
     }
 }
