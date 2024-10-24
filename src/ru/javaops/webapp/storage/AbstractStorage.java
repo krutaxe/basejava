@@ -1,41 +1,57 @@
 package ru.javaops.webapp.storage;
 
+import ru.javaops.webapp.exception.ExistStorageException;
 import ru.javaops.webapp.exception.NotExistStorageException;
 import ru.javaops.webapp.model.Resume;
 
 public abstract class AbstractStorage implements Storage {
     @Override
     public void update(Resume r) {
-        int index = findIndex(r.getUuid());
-        checkResume(index, r.getUuid());
-        updateResume(index, r);
+        int searchKey = (int) findIndex(r.getUuid());
+        if (!isExisting(searchKey)) {
+            throw new NotExistStorageException(r.getUuid());
+        }
+        updateResume(searchKey, r);
     }
 
     @Override
     public Resume get(String uuid) {
-        int index = findIndex(uuid);
-        checkResume(index, uuid);
-        return getResume(index);
+        int searchKey = (int) findIndex(uuid);
+        if (!isExisting(searchKey)) {
+            throw new NotExistStorageException(uuid);
+        }
+        return getResume(searchKey);
     }
 
     @Override
     public void delete(String uuid) {
-        int index = findIndex(uuid);
-        checkResume(index, uuid);
-        deleteResume(index);
+        int searchKey = (int) findIndex(uuid);
+        if (!isExisting(searchKey)) {
+            throw new NotExistStorageException(uuid);
+        }
+        deleteResume(searchKey);
     }
 
-    protected abstract int findIndex(String uuid);
+    @Override
+    public void save(Resume resume) {
+        int searchKey = (int) findIndex(resume.getUuid());
+        if (isExisting(searchKey)) {
+            throw new ExistStorageException(resume.getUuid());
+        }
+        saveResume(resume, searchKey);
+    }
+
+    private boolean isExisting(Object index) {
+        return (int) index >= 0;
+    }
+
+    protected abstract void saveResume(Resume resume, int index);
+
+    protected abstract Object findIndex(String uuid);
 
     protected abstract void updateResume(int index, Resume resume);
 
     protected abstract Resume getResume(int index);
 
     protected abstract void deleteResume(int index);
-
-    private void checkResume(int index, String uuid) {
-        if (index < 0) {
-            throw new NotExistStorageException(uuid);
-        }
-    }
 }

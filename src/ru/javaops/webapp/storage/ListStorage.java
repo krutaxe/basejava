@@ -2,23 +2,19 @@ package ru.javaops.webapp.storage;
 
 import java.util.ArrayList;
 import java.util.List;
-import ru.javaops.webapp.exception.ExistStorageException;
 import ru.javaops.webapp.model.Resume;
 
 public class ListStorage extends AbstractStorage {
     private final List<Resume> storage = new ArrayList<>();
 
     @Override
-    public void clear() {
-        storage.clear();
+    protected void saveResume(Resume resume, int index) {
+        storage.add(resume);
     }
 
     @Override
-    public void save(Resume r) {
-        if (findIndex(r.getUuid()) != -1) {
-            throw new ExistStorageException(r.getUuid());
-        }
-        storage.add(r);
+    public void clear() {
+        storage.clear();
     }
 
     @Override
@@ -32,7 +28,7 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    public int findIndex(String uuid) {
+    public Object findIndex(String uuid) {
         for (int i = 0; i < size(); i++) {
             if (storage.get(i).getUuid().equals(uuid)) {
                 return i;
@@ -43,7 +39,7 @@ public class ListStorage extends AbstractStorage {
 
     @Override
     protected void updateResume(int index, Resume resume) {
-        storage.add(index, resume);
+        storage.set(index, resume);
     }
 
     @Override

@@ -1,7 +1,6 @@
 package ru.javaops.webapp.storage;
 
 import java.util.Arrays;
-import ru.javaops.webapp.exception.ExistStorageException;
 import ru.javaops.webapp.exception.StorageException;
 import ru.javaops.webapp.model.Resume;
 
@@ -14,19 +13,6 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     public void clear() {
         Arrays.fill(storage, 0, size, null);
         size = 0;
-    }
-
-    @Override
-    public void save(Resume r) {
-        int result = findIndex(r.getUuid());
-        if (size >= STORAGE_LIMIT) {
-            throw new StorageException("Storage overflow", r.getUuid());
-        } else if (result >= 0) {
-            throw new ExistStorageException(r.getUuid());
-        } else {
-            insertResume(r, result);
-            size++;
-        }
     }
 
     @Override
@@ -54,5 +40,14 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     protected void updateArrayStorage(int index) {
         storage[size - 1] = null;
         size--;
+    }
+
+    @Override
+    protected void saveResume(Resume resume, int index) {
+        if (size >= STORAGE_LIMIT) {
+            throw new StorageException("Storage overflow", resume.getUuid());
+        }
+        insertResume(resume, index);
+        size++;
     }
 }

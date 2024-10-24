@@ -4,7 +4,7 @@ import ru.javaops.webapp.model.Resume;
 
 public class ArrayStorage extends AbstractArrayStorage {
     @Override
-    protected int findIndex(String uuid) {
+    protected Object findIndex(String uuid) {
         for (int i = 0; i < size; i++) {
             if (storage[i].getUuid().equals(uuid)) {
                 return i;
