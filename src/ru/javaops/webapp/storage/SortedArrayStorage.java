@@ -5,26 +5,27 @@ import ru.javaops.webapp.model.Resume;
 
 public class SortedArrayStorage extends AbstractArrayStorage {
     @Override
-    protected Object findIndex(String uuid) {
+    protected Integer findSearchKey(String uuid) {
         Resume resume = new Resume(uuid);
         return Arrays.binarySearch(storage, 0, size, resume);
     }
 
     @Override
-    protected void insertResume(Resume r, int index) {
-        if (index < 0) {
-            index = Math.abs(index) - 1;
+    protected void insertResume(Resume r) {
+        int searchKey = findSearchKey(r.getUuid());
+        if (searchKey < 0) {
+            searchKey = Math.abs(searchKey) - 1;
         }
-        System.arraycopy(storage, index, storage, index + 1, size - index);
-        storage[index] = r;
+        System.arraycopy(storage, searchKey, storage, searchKey + 1, size - searchKey);
+        storage[searchKey] = r;
     }
 
     @Override
-    protected void deleteResume(Object index) {
-        if ((int) index < 0) {
-            index = Math.abs((int) index) - 1;
+    protected void deleteResume(Integer searchKey) {
+        if (searchKey < 0) {
+            searchKey = Math.abs(searchKey) - 1;
         }
-        System.arraycopy(storage, (int) index + 1, storage, (int) index, size - (int) index - 1);
-        updateArrayStorage(index);
+        System.arraycopy(storage, searchKey + 1, storage, searchKey, size - searchKey - 1);
+        updateArrayStorage();
     }
 }
