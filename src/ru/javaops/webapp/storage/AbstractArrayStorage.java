@@ -35,11 +35,6 @@ public abstract class AbstractArrayStorage extends AbstractStorage<Integer> {
         return storage[searchKey];
     }
 
-    protected void updateArrayStorage() {
-        storage[size - 1] = null;
-        size--;
-    }
-
     @Override
     protected void saveResume(Resume resume) {
         if (size >= STORAGE_LIMIT) {
@@ -54,5 +49,14 @@ public abstract class AbstractArrayStorage extends AbstractStorage<Integer> {
         return searchKey >= 0;
     }
 
+    @Override
+    protected void deleteResume(Integer searchKey) {
+        fillDeletedElement(searchKey);
+        storage[size - 1] = null;
+        size--;
+    }
+
     protected abstract void insertResume(Resume r);
+
+    protected abstract void fillDeletedElement(Integer searchKey);
 }

@@ -21,11 +21,10 @@ public class SortedArrayStorage extends AbstractArrayStorage {
     }
 
     @Override
-    protected void deleteResume(Integer searchKey) {
+    protected void fillDeletedElement(Integer searchKey) {
         if (searchKey < 0) {
             searchKey = Math.abs(searchKey) - 1;
         }
         System.arraycopy(storage, searchKey + 1, storage, searchKey, size - searchKey - 1);
-        updateArrayStorage();
     }
 }

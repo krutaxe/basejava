@@ -19,8 +19,7 @@ public class ArrayStorage extends AbstractArrayStorage {
     }
 
     @Override
-    protected void deleteResume(Integer searchKey) {
+    protected void fillDeletedElement(Integer searchKey) {
         storage[searchKey] = storage[size - 1];
-        updateArrayStorage();
     }
 }

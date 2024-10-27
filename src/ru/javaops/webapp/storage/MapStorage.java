@@ -17,7 +17,7 @@ public class MapStorage extends AbstractStorage<String> {
         if (storage.get(uuid) == null) {
             return null;
         }
-        return storage.get(uuid).getUuid();
+        return uuid;
     }
 
     @Override
