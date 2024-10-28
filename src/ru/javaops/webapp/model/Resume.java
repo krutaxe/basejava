@@ -1,13 +1,16 @@
 package ru.javaops.webapp.model;
 
 import java.util.Objects;
+import java.util.StringJoiner;
 import java.util.UUID;
 
 /**
  * Initial resume class.
  */
-public class Resume implements Comparable<Resume> {
+public class Resume {
     private final String uuid;
+
+    private String fullName;
 
     public Resume() {
         this(UUID.randomUUID().toString());
@@ -17,13 +20,24 @@ public class Resume implements Comparable<Resume> {
         this.uuid = uuid;
     }
 
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
     public String getUuid() {
         return uuid;
     }
 
+    public String getFullName() {
+        return fullName;
+    }
+
     @Override
     public String toString() {
-        return uuid;
+        return new StringJoiner(", ", Resume.class.getSimpleName() + "[", "]")
+                .add("uuid='" + uuid + "'")
+                .add("fullName='" + fullName + "'")
+                .toString();
     }
 
     @Override
@@ -35,16 +49,11 @@ public class Resume implements Comparable<Resume> {
             return false;
         }
         Resume resume = (Resume) o;
-        return Objects.equals(uuid, resume.uuid);
+        return Objects.equals(uuid, resume.uuid) && Objects.equals(fullName, resume.fullName);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(uuid);
-    }
-
-    @Override
-    public int compareTo(Resume o) {
-        return uuid.compareTo(o.uuid);
+        return Objects.hash(uuid, fullName);
     }
 }

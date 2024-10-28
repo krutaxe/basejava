@@ -1,6 +1,6 @@
 package ru.javaops.webapp.storage;
 
-class SortedArrayStorageTest extends AbstractArrayStorageTest {
+public class SortedArrayStorageTest extends AbstractStorageTest {
     public SortedArrayStorageTest() {
         super(new SortedArrayStorage());
     }

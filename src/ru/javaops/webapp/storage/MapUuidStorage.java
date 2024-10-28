@@ -1,10 +1,13 @@
 package ru.javaops.webapp.storage;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import ru.javaops.webapp.model.Resume;
 
-public class MapStorage extends AbstractStorage<String> {
+public class MapUuidStorage extends AbstractStorage<String> {
     private final Map<String, Resume> storage = new HashMap<>();
 
     @Override
@@ -41,8 +44,11 @@ public class MapStorage extends AbstractStorage<String> {
     }
 
     @Override
-    public Resume[] getAll() {
-        return storage.values().toArray(new Resume[0]);
+    public List<Resume> getAllSorted() {
+        List<Resume> resumeList = new ArrayList<>(storage.values());
+        resumeList.sort(Comparator.comparing(Resume::getFullName)
+                .thenComparing(Resume::getUuid));
+        return resumeList;
     }
 
     @Override
