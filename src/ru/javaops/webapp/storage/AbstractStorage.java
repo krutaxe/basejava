@@ -1,5 +1,9 @@
 package ru.javaops.webapp.storage;
 
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+
 import ru.javaops.webapp.exception.ExistStorageException;
 import ru.javaops.webapp.exception.NotExistStorageException;
 import ru.javaops.webapp.model.Resume;
@@ -32,6 +36,17 @@ public abstract class AbstractStorage<T> implements Storage {
         checkExistingSearchKey(searchKey, resume.getUuid());
         saveResume(resume);
     }
+
+    @Override
+    public List<Resume> getAllSorted() {
+        List<Resume> list = new ArrayList<>(getAll());
+        Comparator<Resume> comparator = Comparator.comparing(Resume::getFullName)
+                .thenComparing(Resume::getUuid);
+        list.sort(comparator);
+        return list;
+    }
+
+    protected abstract List<Resume> getAll();
 
     protected abstract boolean isExisting(T searchKey);
 

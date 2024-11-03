@@ -10,17 +10,16 @@ import java.util.UUID;
 public class Resume {
     private final String uuid;
 
-    private String fullName;
+    private final String fullName;
 
-    public Resume() {
-        this(UUID.randomUUID().toString());
+    public Resume(String fullName) {
+        this(UUID.randomUUID().toString(), fullName);
     }
 
-    public Resume(String uuid) {
+    public Resume(String uuid, String fullName) {
+        Objects.requireNonNull(uuid, "uuid must not be null");
+        Objects.requireNonNull(fullName, "fullName must not be null");
         this.uuid = uuid;
-    }
-
-    public void setFullName(String fullName) {
         this.fullName = fullName;
     }
 

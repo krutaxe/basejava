@@ -7,7 +7,7 @@ import ru.javaops.webapp.model.Resume;
 public class SortedArrayStorage extends AbstractArrayStorage {
     @Override
     protected Integer findSearchKey(String uuid) {
-        Resume resume = new Resume(uuid);
+        Resume resume = new Resume(uuid, "dummy");
         Comparator<Resume> comparator = Comparator.comparing(Resume::getUuid);
         return Arrays.binarySearch(storage, 0, size, resume, comparator);
     }

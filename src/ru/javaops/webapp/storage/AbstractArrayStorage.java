@@ -1,9 +1,6 @@
 package ru.javaops.webapp.storage;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import ru.javaops.webapp.exception.StorageException;
@@ -21,12 +18,8 @@ public abstract class AbstractArrayStorage extends AbstractStorage<Integer> {
     }
 
     @Override
-    public List<Resume> getAllSorted() {
-        List<Resume> resumeList = new ArrayList<>();
-        Collections.addAll(resumeList, Arrays.copyOf(storage, size));
-        resumeList.sort(Comparator.comparing(Resume::getFullName)
-                .thenComparing(Resume::getUuid));
-        return resumeList;
+    protected List<Resume> getAll() {
+        return List.of(Arrays.copyOf(storage, size));
     }
 
     @Override

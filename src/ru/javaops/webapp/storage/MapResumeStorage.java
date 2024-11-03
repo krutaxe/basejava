@@ -1,7 +1,6 @@
 package ru.javaops.webapp.storage;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,20 +40,17 @@ public class MapResumeStorage extends AbstractStorage<Resume> {
     }
 
     @Override
-    public List<Resume> getAllSorted() {
-        List<Resume> resumeList = new ArrayList<>(storage.values());
-        resumeList.sort(Comparator.comparing(Resume::getFullName)
-                .thenComparing(Resume::getUuid));
-        return resumeList;
-    }
-
-    @Override
     public int size() {
         return storage.size();
     }
 
     @Override
     protected boolean isExisting(Resume searchKey) {
-        return storage.containsKey(searchKey.getUuid());
+        return searchKey != null;
+    }
+
+    @Override
+    protected List<Resume> getAll() {
+        return new ArrayList<>(storage.values());
     }
 }
